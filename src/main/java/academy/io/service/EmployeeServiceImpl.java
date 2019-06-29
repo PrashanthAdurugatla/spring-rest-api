@@ -1,6 +1,8 @@
 package academy.io.service;
 
 import academy.io.entity.Employee;
+import academy.io.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -11,19 +13,24 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    @Autowired
+    EmployeeRepository repository;
+
     @Override
     public List<Employee> findAll() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("Prashanth", "padurugatla9@gmail.com", 10000));
-        employees.add(new Employee("Adurugatla", "prashantha9@gmail.com", 20000));
-
-        return employees;
+        return repository.findAll();
     }
 
     @Override
     public Employee findOne(String id) {
-        Employee emp = new Employee("Adurugatla", "prashantha9@gmail.com", 20000);
-        return emp;
+        Employee employee = repository.findOne(id);   //If user doesn't exists then it returns Null object
+
+        if(employee == null){
+            return null;
+        }
+        else{
+            return employee;
+        }
     }
 
     @Override
