@@ -1,6 +1,7 @@
 package academy.io.service;
 
 import academy.io.entity.Employee;
+import academy.io.exception.EmployeeNotFoundException;
 import academy.io.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = repository.findOne(id);   //If user doesn't exists then it returns Null object
 
         if(employee == null){
-            return null;
+            throw new EmployeeNotFoundException("Employee with id=" + id + "NOT FOUND");
         }
         else{
             return employee;
