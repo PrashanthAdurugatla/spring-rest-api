@@ -3,24 +3,55 @@ package academy.io.repository;
 import academy.io.entity.Employee;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class EmployeeRepositoryImpl implements EmployeeRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public List<Employee> findAll() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("Prashanth", "padurugatla9@gmail.com", 10000));
-        employees.add(new Employee("Adurugatla", "prashantha9@gmail.com", 20000));
-
-        return employees;
-
+        TypedQuery<Employee> query = entityManager.createNamedQuery("Employee.findAll", Employee.class);
+        return query.getResultList();
     }
 
     @Override
     public Employee findOne(String id) {
-        Employee emp = new Employee("Adurugatla", "prashantha9@gmail.com", 20000);
-        return emp;
+        return entityManager.find(Employee.class, id);
+    }
+
+    @Override
+    public Employee findByEmail(String email) {
+        TypedQuery<Employee> query = entityManager.createNamedQuery("Employee.findByEmail", Employee.class);
+        query.setParameter("paramEmail", email);
+        List<Employee> resultList = query.getResultList();
+        if(resultList != null && resultList.size() ==1){
+            return resultList.get(0);
+        }else {
+            return null;
+        }
+    }
+
+
+    @Override
+    public Employee create(Employee emp) {
+         entityManager.persist(emp);
+         return emp;
+    }
+
+    @Override
+    public Employee update(Employee emp) {
+        return entityManager.merge(emp);
+    }
+
+    @Override
+    public void delete(Employee emp) {
+        entityManager.remove(emp);
     }
 }

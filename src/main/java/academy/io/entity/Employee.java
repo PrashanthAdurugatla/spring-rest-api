@@ -1,34 +1,53 @@
 package academy.io.entity;
 
+import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
+@NamedQueries({
+
+         @NamedQuery(name = "Employee.findAll",
+                    query = "SELECT emp FROM Employee emp ORDER BY emp.email ASC"),
+
+        @NamedQuery(name = "Employee.findByEmail",
+                query = "SELECT emp FROM Employee emp WHERE emp.email=:paramEmail")
+})
+
 public class Employee {
+
+    @Id
+    @Column(columnDefinition = "VARCHAR(36)")
     private String id;
-    private String name;
-    private String email;
-    private int salary;
 
-    public Employee(String name, String email, int salary) {
-        this.id = UUID.randomUUID().toString();
-        this.name = name;
-        this.email = email;
-        this.salary = salary;
+    private  String firstName;
+    private  String lastName;
+
+    @Column(unique = true)
+    private  String email;
+
+    public Employee( ) {
+        this.id = UUID.randomUUID()
+                      .toString();
     }
 
-    public String getId() {
-        return id;
+    public String getId(){ return id;}
+
+    public void setid(String id){ this.id = id; }
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -39,11 +58,13 @@ public class Employee {
         this.email = email;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
