@@ -1,3 +1,3 @@
-# springMVC-rest-api
+# spring-restful-api
 
-Create a simple Spring MVC rest-api example using Maven and Annotations
+Created a Spring restful-api example using Maven and Annotations
